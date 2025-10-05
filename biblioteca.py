@@ -1,21 +1,87 @@
+import csv
 def carica_da_file(file_path):
     """Carica i libri dal file"""
     # TODO
+    try:
+        infile=open(str(file_path),"r")
+    except FileNotFoundError:
+        print("File not found")
+        return None
+    dizionario={}
+    riga=infile.readline()
+    for riga in infile:
+        riga=riga.strip('\n')
+        riga=riga.split(',')
+        if riga[4] not in dizionario:
+            dizionario[riga[4]]=[]
+        dizionario[riga[4]].append(riga)
+    print("BIBLIOTECA CARICATA CON SUCCESSO")
+    infile.close()
+    return dizionario
+
+
 
 
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
     """Aggiunge un libro nella biblioteca"""
     # TODO
+    try:
+        file=open(str(file_path),"a")
+        outfile=csv.writer(file)
+    except FileNotFoundError:
+        return None
+
+    presente=False
+    if str(sezione) in biblioteca.keys():
+        for sezioni in biblioteca.keys():
+            for i in range (len(biblioteca[sezioni])):
+                if titolo in biblioteca[sezioni][i]:
+                    presente=True
+                    return None
+        nuovo_libro=(str(titolo)+","+str(autore)+","+str(anno)+","+str(pagine)+","+str(sezione))
+        nuovo_libro=nuovo_libro.split(",")
+        biblioteca[str(sezione)].append(nuovo_libro)
+        print(f'libro aggiunto {nuovo_libro}')
+        outfile.writerow(nuovo_libro)
+        return True
+
+    else:
+        return None
+
+
+
 
 
 def cerca_libro(biblioteca, titolo):
     """Cerca un libro nella biblioteca dato il titolo"""
     # TODO
+    presente=False
+    for sezione in biblioteca.keys():
+        for i in range (len(biblioteca[sezione])):
+            if titolo in biblioteca[str(sezione)][i]:
+                presente=True
+                return ", ".join(biblioteca[sezione][i])
+    if presente==False:
+        return None
+
 
 
 def elenco_libri_sezione_per_titolo(biblioteca, sezione):
     """Ordina i titoli di una data sezione della biblioteca in ordine alfabetico"""
     # TODO
+    elenco_libri=[]
+    if str(sezione) in biblioteca.keys():
+        for sezioni in str(biblioteca.keys()):
+            if str(sezione)==sezioni:
+                for i in range (len(biblioteca[str(sezione)])):
+                    elenco_libri.append(biblioteca[str(sezione)][i][0])
+
+        elenco_libri=sorted(elenco_libri)
+        return elenco_libri
+
+
+    else:
+        return None
 
 
 def main():
