@@ -27,7 +27,7 @@ def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path)
     """Aggiunge un libro nella biblioteca"""
     # TODO
     try:
-        file=open(str(file_path),"a")
+        file=open(str(file_path),"a",newline="")
         outfile=csv.writer(file)
     except FileNotFoundError:
         return None
@@ -40,11 +40,12 @@ def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path)
                     presente=True
                     return None
         nuovo_libro=(str(titolo)+","+str(autore)+","+str(anno)+","+str(pagine)+","+str(sezione))
+        nuovo_libro=nuovo_libro.strip('\n')
         nuovo_libro=nuovo_libro.split(",")
         biblioteca[str(sezione)].append(nuovo_libro)
         print(f'libro aggiunto {nuovo_libro}')
         outfile.writerow(nuovo_libro)
-        outfile.close()
+        file.close()
         return True
 
     else:
