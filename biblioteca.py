@@ -8,6 +8,7 @@ def carica_da_file(file_path):
         print("File not found")
         return None
     dizionario={}
+    infile.seek(0)
     riga=infile.readline()
     for riga in infile:
         riga=riga.strip('\n')
@@ -43,6 +44,7 @@ def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path)
         biblioteca[str(sezione)].append(nuovo_libro)
         print(f'libro aggiunto {nuovo_libro}')
         outfile.writerow(nuovo_libro)
+        outfile.close()
         return True
 
     else:
